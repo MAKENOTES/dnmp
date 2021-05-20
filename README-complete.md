@@ -15,4 +15,13 @@
 5. 请求超时问题
     - 建议不要使用 nginx.back.conf  配置存在些问题  
 
-## 二
+6. 初始化配置说明
+    - .env                  参考env.dev                     [HOST  SOURCE_DIR]
+    - docker-compose.yml    参考 docker-compose.dev.yml
+    - conf.d
+
+## 二 待处理事项
+
+1. supervisor 容器了解
+
+2. ffmpeg https 
