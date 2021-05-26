@@ -114,3 +114,12 @@ RUN if [[ -z "${PLUGINS##*,amazon-ec2,*}" ]]; then \
       printf "y\n" | elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v${ELASTICSEARCH_VERSION}/elasticsearch-analysis-pinyin-${ELASTICSEARCH_VERSION}.zip; \
     fi
 
+# COPY ./extensions /tmp/extensions
+# RUN mkdir /usr/share/elasticsearch/plugins/ik \
+#     && mv /tmp/extensions/elasticsearch-analysis-ik-7.1.1.zip /usr/share/elasticsearch/plugins/ik \
+#     && cd /usr/share/elasticsearch/plugins/ik \
+#     && unzip elasticsearch-analysis-ik-7.1.1.zip \
+#     && rm -rf elasticsearch-analysis-ik-7.1.1.zip \
+#     && mkdir /usr/share/elasticsearch/config/analysis \
+#     && touch /usr/share/elasticsearch/config/analysis/synonyms.txt
+
