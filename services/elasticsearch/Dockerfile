@@ -123,3 +123,6 @@ RUN if [[ -z "${PLUGINS##*,amazon-ec2,*}" ]]; then \
 #     && mkdir /usr/share/elasticsearch/config/analysis \
 #     && touch /usr/share/elasticsearch/config/analysis/synonyms.txt
 
+RUN mkdir /usr/share/elasticsearch/config/analysis \
+    && touch /usr/share/elasticsearch/config/analysis/synonyms.txt
+
