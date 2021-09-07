@@ -2,6 +2,7 @@
 
 1. MongoDB  容器启动问题
     - 【docker-compose.yml】 volume 映射关系使用 虚拟磁盘卷 - virtual_mongo:/data/db:rw （使用- ${DATA_DIR}/mongo:/data/db:rw  会报错）
+    -  mysql 容器再 wsl 2 的环境下， 也会出现 容器不断重启问题
 
 2. 访问网站提示 文件未找到
     - 【docker-compose.yml】 SOURCE_DIR 映射问题 - ${SOURCE_DIR}:/var/www/:rw （使用 - ${SOURCE_DIR}:/www/:rw  会出现 访问网站提示 文件未找到）
@@ -19,6 +20,10 @@
     - .env                  参考env.dev                     [HOST  SOURCE_DIR]
     - docker-compose.yml    参考 docker-compose.dev.yml
     - conf.d
+
+7. 容器 mysql8  使用Navicat连接报2059错误
+    - 原因： mysql8 之前的版本中加密规则是mysql_native_password，而在mysql8之后加密规则是caching_sha2_password，navicat驱动目前不支持新加密规则
+    - 解决方案：进入mysql容器  mysql -uroot -pmima      ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';
 
 ## 二 待处理事项
 
