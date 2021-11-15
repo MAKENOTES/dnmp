@@ -104,25 +104,25 @@ RUN if [[ -z "${PLUGINS##*,amazon-ec2,*}" ]]; then \
     && \
     if [[ -z "${PLUGINS##*,store-smb,*}" ]]; then \
         printf "y\n" | elasticsearch-plugin install store-smb; \
-    fi \
-    && \
-    if [[ -z "${PLUGINS##*,analysis-ik,*}" ]]; then \
-        printf "y\n" | elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v${ELASTICSEARCH_VERSION}/elasticsearch-analysis-ik-${ELASTICSEARCH_VERSION}.zip; \
-    fi \
-    && \
-    if [[ -z "${PLUGINS##*,analysis-pinyin,*}" ]]; then \
-      printf "y\n" | elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v${ELASTICSEARCH_VERSION}/elasticsearch-analysis-pinyin-${ELASTICSEARCH_VERSION}.zip; \
     fi
+    # && \
+    # if [[ -z "${PLUGINS##*,analysis-ik,*}" ]]; then \
+    #     printf "y\n" | elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v${ELASTICSEARCH_VERSION}/elasticsearch-analysis-ik-${ELASTICSEARCH_VERSION}.zip; \
+    # fi \
+    # && \
+    # if [[ -z "${PLUGINS##*,analysis-pinyin,*}" ]]; then \
+    #   printf "y\n" | elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-pinyin/releases/download/v${ELASTICSEARCH_VERSION}/elasticsearch-analysis-pinyin-${ELASTICSEARCH_VERSION}.zip; \
+    # fi
 
-# COPY ./extensions /tmp/extensions
-# RUN mkdir /usr/share/elasticsearch/plugins/ik \
-#     && mv /tmp/extensions/elasticsearch-analysis-ik-7.1.1.zip /usr/share/elasticsearch/plugins/ik \
-#     && cd /usr/share/elasticsearch/plugins/ik \
-#     && unzip elasticsearch-analysis-ik-7.1.1.zip \
-#     && rm -rf elasticsearch-analysis-ik-7.1.1.zip \
-#     && mkdir /usr/share/elasticsearch/config/analysis \
-#     && touch /usr/share/elasticsearch/config/analysis/synonyms.txt
-
-RUN mkdir /usr/share/elasticsearch/config/analysis \
+COPY ./extensions /tmp/extensions
+RUN mkdir /usr/share/elasticsearch/plugins/ik \
+    && mv /tmp/extensions/elasticsearch-analysis-ik-7.1.1.zip /usr/share/elasticsearch/plugins/ik \
+    && cd /usr/share/elasticsearch/plugins/ik \
+    && unzip elasticsearch-analysis-ik-7.1.1.zip \
+    && rm -rf elasticsearch-analysis-ik-7.1.1.zip \
+    && mkdir /usr/share/elasticsearch/config/analysis \
     && touch /usr/share/elasticsearch/config/analysis/synonyms.txt
+
+# RUN mkdir /usr/share/elasticsearch/config/analysis \
+#     && touch /usr/share/elasticsearch/config/analysis/synonyms.txt
 
