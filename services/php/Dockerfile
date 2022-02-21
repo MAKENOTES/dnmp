@@ -1,4 +1,5 @@
-FROM makenotes/apline_php72:1.2
+FROM makenotes/apline_php74:1.0
+#FROM makenotes/apline_php72:1.2
 
 # Install composer and change it's cache home
 RUN curl -o /usr/bin/composer https://mirrors.aliyun.com/composer/composer.phar \

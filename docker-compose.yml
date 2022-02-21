@@ -61,6 +61,7 @@ services:
       - "op.mjngs.com:${HOST}"
       - "pro.mjngs.com:${HOST}"
       - "biz.mjngs.com:${HOST}"
+      - "middle.nngs.com:${HOST}"
       - "oos.mjngs.com:${HOST}"
       - "rapi.mjngs.com:${HOST}"
       - "login.majorbio.tt:${HOST}"
@@ -80,6 +81,7 @@ services:
       - "s3.i-sanger.com:10.100.3.19"
       - "commonbucket.s3.i-sanger.com:10.100.3.19"
       - "lee.s3.i-sanger.com:10.100.3.19"
+      - "www.onlyoffice.kf:${HOST}"
     volumes:
       - ${SOURCE_DIR}:/var/www/:rw
       - ${PHP_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
@@ -97,28 +99,91 @@ services:
     networks:
       - backend
 
-#  php56:
-#    build:
-#      context: ./services/php
-#      args:
-#        PHP_VERSION: php:${PHP56_VERSION}-fpm-alpine
-#        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
-#        PHP_EXTENSIONS: ${PHP56_EXTENSIONS}
-#        TZ: "$TZ"
-#    container_name: php56
-#    expose:
-#      - 9501
-#    volumes:
-#      - ${SOURCE_DIR}:/www/:rw
-#      - ${PHP56_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
-#      - ${PHP56_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
-#      - ${PHP56_LOG_DIR}:/var/log/php
-#      - ${DATA_DIR}/composer:/tmp/composer
-#    restart: always
-#    cap_add:
-#      - SYS_PTRACE
-#    networks:
-#      - default
+  # php81:
+  #   build:
+  #     context: ./services/php81
+  #     args:
+  #       CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+  #   container_name: php81
+  #   expose:
+  #     - 9000
+  #   extra_hosts:
+  #     - "live.lpt.kf:${HOST}"
+  #     - "ngs.mjngs.com:${HOST}"
+  #     - "crm.mjngs.com:${HOST}"
+  #     - "service.mjngs.com:${HOST}"
+  #     - "cron.mjngs.com:${HOST}"
+  #     - "api.mjngs.com:${HOST}"
+  #     - "apis.mjngs.com:${HOST}"
+  #     - "apiom.mjngs.com:${HOST}"
+  #     - "apix.mjngs.com:${HOST}"
+  #     - "op.mjngs.com:${HOST}"
+  #     - "pro.mjngs.com:${HOST}"
+  #     - "biz.mjngs.com:${HOST}"
+  #     - "middle.nngs.com:${HOST}"
+  #     - "oos.mjngs.com:${HOST}"
+  #     - "rapi.mjngs.com:${HOST}"
+  #     - "login.majorbio.tt:${HOST}"
+  #     - "edu.majorbio.tt:${HOST}"
+  #     - "vip.majorbio.tt:${HOST}"
+  #     - "login.majorkf.com:${HOST}"
+  #     - "service.tngs.com:${HOST}"
+  #     - "cron.tngs.com:${HOST}"
+  #     - "api.tngs.com:${HOST}"
+  #     - "apiom.tngs.com:${HOST}"
+  #     - "apix.tngs.com:${HOST}"
+  #     - "rapi.tngs.com:${HOST}"
+  #     - "op.tngs.com:${HOST}"
+  #     - "pro.tngs.com:${HOST}"
+  #     - "biz.tngs.com:${HOST}"
+  #     - "oos.tngs.com:${HOST}"
+  #     - "s3.i-sanger.com:10.100.3.19"
+  #     - "commonbucket.s3.i-sanger.com:10.100.3.19"
+  #     - "lee.s3.i-sanger.com:10.100.3.19"
+  #     - "www.onlyoffice.kf:${HOST}"
+  #   volumes:
+  #     - ${SOURCE_DIR}:/var/www/:rw
+  #     - ${PHP81_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+  #     - ${PHP81_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+  #     - ${PHP81_LOG_DIR}:/var/log/php
+  #     - ${DATA_DIR}/composer:/tmp/composer
+  #   restart: always
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   depends_on: 
+  #     - mysql
+  #     - redis
+  #     - mongodb
+  #     - memcached
+  #   networks:
+  #     - backend
+
+  php56:
+    build:
+      context: ./services/php56
+      args:
+        CONTAINER_PACKAGE_URL: ${CONTAINER_PACKAGE_URL}
+    container_name: php56
+    extra_hosts:
+      - "middle.nngs.com:${HOST}"
+      - "apis.mjngs.com:${HOST}"
+    volumes:
+      - ${SOURCE_DIR}:/var/www/:rw
+      - ${PHP56_PHP_CONF_FILE}:/usr/local/etc/php/php.ini:ro
+      - ${PHP56_FPM_CONF_FILE}:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ${PHP56_ZZ_DOCKER_FILE}:/usr/local/etc/php-fpm.d/zz-docker.conf:rw
+      - ${PHP56_LOG_DIR}:/var/log/php
+      - ${DATA_DIR}/composer:/tmp/composer
+    restart: always
+    cap_add:
+      - SYS_PTRACE
+    depends_on: 
+      - mysql
+      - redis
+      - mongodb
+      - memcached
+    networks:
+      - backend
 
 #  php54:
 #    build:
@@ -287,43 +352,43 @@ services:
 #    networks:
 #      - default
 
-  elasticsearch:
-    build:
-      context: ./services/elasticsearch
-      args:
-        ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
-        ELASTICSEARCH_PLUGINS: ${ELASTICSEARCH_PLUGINS}
-    container_name: elasticsearch
-    environment:
-      - TZ=$TZ
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    volumes:
-      - ${DATA_DIR}/esdata:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
-    hostname: elasticsearch
-    restart: always
-    ports:
-      - "${ELASTICSEARCH_HOST_PORT_C}:9200"
-      - "${ELASTICSEARCH_HOST_PORT_S}:9300"
-    networks:
-      - backend
+  # elasticsearch:
+  #   build:
+  #     context: ./services/elasticsearch
+  #     args:
+  #       ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
+  #       ELASTICSEARCH_PLUGINS: ${ELASTICSEARCH_PLUGINS}
+  #   container_name: elasticsearch
+  #   environment:
+  #     - TZ=$TZ
+  #     - discovery.type=single-node
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   volumes:
+  #     - ${DATA_DIR}/esdata:/usr/share/elasticsearch/data
+  #     - ${ELASTICSEARCH_CONF_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml
+  #   hostname: elasticsearch
+  #   restart: always
+  #   ports:
+  #     - "${ELASTICSEARCH_HOST_PORT_C}:9200"
+  #     - "${ELASTICSEARCH_HOST_PORT_S}:9300"
+  #   networks:
+  #     - backend
 
-  kibana:
-    image: kibana:${KIBANA_VERSION}
-    container_name: kibana
-    environment:
-      TZ: "$TZ"
-      elasticsearch.hosts: http://elasticsearch:9200
-      I18N_LOCALE: "${KIBANA_I18N_LOCALE}"
-    hostname: kibana
-    depends_on:
-      - elasticsearch
-    restart: always
-    ports:
-      - "${KIBANA_HOST}:5601"
-    networks:
-      - backend
+  # kibana:
+  #   image: kibana:${KIBANA_VERSION}
+  #   container_name: kibana
+  #   environment:
+  #     TZ: "$TZ"
+  #     elasticsearch.hosts: http://elasticsearch:9200
+  #     I18N_LOCALE: "${KIBANA_I18N_LOCALE}"
+  #   hostname: kibana
+  #   depends_on:
+  #     - elasticsearch
+  #   restart: always
+  #   ports:
+  #     - "${KIBANA_HOST}:5601"
+  #   networks:
+  #     - backend
 
 #  logstash:
 #    image: logstash:${LOGSTASH_VERSION}
@@ -377,3 +442,17 @@ services:
 #      - SYS_PTRACE
 #    networks:
 #      - default
+
+  # onlyoffice:
+  #   build:
+  #     context: ./services/onlyoffice
+  #   container_name: onlyoffice
+  #   volumes:
+  #     - ./logs/onlyoffice:/var/log/onlyoffice:rw
+  #     - ./data/onlyoffice:/var/www/onlyoffice/Data:rw
+  #   ports:
+  #     - "9090:80"
+  #   extra_hosts:
+  #     - "www.onlyoffice.kf:${HOST}"
+  #   networks:
+  #     - backend

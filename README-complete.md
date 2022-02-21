@@ -30,3 +30,45 @@
 1. supervisor 容器了解
 
 2. ffmpeg https 
+
+## 三 常用命令
+1. php容器相关
+    netstat -taupln | grep 'php'
+    netstat -lntup | grep 9000
+        
+    ps -ef | grep php-fpm   查看php-fpm所有的进程
+
+    ps -ef | grep php-fpn.conf 查看配置所在路径
+
+    pkill php-fpm
+    php-fpm -R
+2. bash: whereis: command not found
+    #Debian
+    apt-get install util-linux
+    
+    #Ubuntu
+    apt-get install util-linux
+    
+    #Alpine
+    apk add util-linux
+    
+    #Arch Linux
+    pacman -S util-linux
+    
+    #Kali Linux
+    apt-get install util-linux
+    
+    #CentOS
+    yum install util-linux
+    
+    #Fedora
+    dnf install util-linux
+    
+    #OS X
+    brew install util-linux
+    
+    #Raspbian
+    apt-get install util-linux
+    
+    #Docker
+    docker run cmd.cat/whereis whereis
